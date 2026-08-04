@@ -1,0 +1,3 @@
+aplikasi ini merupakan revisi dari versi sebelumnya
+halaman admin dan user jadi satu kesatuan
+admin / user mempunyai perannya masing-masing
