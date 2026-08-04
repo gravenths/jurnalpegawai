@@ -126,10 +126,10 @@ class Router
 		$fieldvalue = (!empty($url_segment[3]) ? $url_segment[3] : null);
 
 		//Remove any unwanted characters as these might be used to interact with the database
-		$page = filter_var($page, FILTER_SANITIZE_STRING);
-		$action = filter_var($action, FILTER_SANITIZE_STRING);
-		$fieldname = filter_var($fieldname, FILTER_SANITIZE_STRING);
-		$fieldvalue = filter_var($fieldvalue, FILTER_SANITIZE_STRING);
+		$page = sanitize_string($page);
+		$action = sanitize_string($action);
+		$fieldname = sanitize_string($fieldname);
+		$fieldvalue = sanitize_string($fieldvalue);
 		
 		//if link action name is 'list' then change it to index [e.g (products/list) >>  (products/index)]
 		//action name cannot be list
@@ -139,7 +139,7 @@ class Router
 
 		//array of arguments that will be passed to the controller function
 		$args = array_slice($url_segment, 2);
-		$args = filter_var_array($args, FILTER_SANITIZE_STRING);
+		$args = sanitize_string($args);
 
 		$page_id = (!empty($args[0]) ? $args[0] : null);
 		// all controller class name must start with capital letter

@@ -561,6 +561,7 @@ function to_number($val, $lang = 'en')
  */
 function str_truncate($string, $length = 50, $ellipse = '...')
 {
+	$string = $string ?? '';
 	if (strlen($string) > $length) {
 		$string = substr($string, 0, $length) . $ellipse;
 	}
@@ -698,7 +699,7 @@ function xecho($data)
  */
 function get_value($fieldname, $default = null)
 {
-	$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+	$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 	if (!empty($get[$fieldname])) {
 		$val = $get[$fieldname];
 		if (is_array($val)) {
@@ -717,7 +718,7 @@ function get_value($fieldname, $default = null)
  */
 function unset_get_value($arr_qs, $page_path = null)
 {
-	$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+	$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 	unset($get['request_uri']);
 	if (is_array($arr_qs)) {
 		foreach ($arr_qs as $key) {
@@ -746,7 +747,7 @@ function unset_get_value($arr_qs, $page_path = null)
  */
 function get_form_field_value($field, $default_value = null)
 {
-	$post =  filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+	$post =  sanitize_string(filter_input_array(INPUT_POST, FILTER_DEFAULT));
 	if (!empty($post[$field])) {
 		return $post[$field];
 	} else {
@@ -761,7 +762,7 @@ function get_form_field_value($field, $default_value = null)
  */
 function get_form_field_checked($field, $value)
 {
-	$post =  filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+	$post =  sanitize_string(filter_input_array(INPUT_POST, FILTER_DEFAULT));
 	if (!empty($post[$field]) && $post[$field] == $value) {
 		return "checked";
 	}
@@ -770,7 +771,7 @@ function get_form_field_checked($field, $value)
 
 function is_active_link($field, $value)
 {
-	$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+	$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 	if (!empty($get[$field]) && $get[$field] == $value) {
 		return "active";
 	}
@@ -889,7 +890,7 @@ function get_url()
  */
 function set_page_link($pagepath = null, $newqs = array())
 {
-	$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+	$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 	unset($get['request_uri']);
 	$allget = array_merge($get, $newqs);
 	$qs = null;
@@ -912,7 +913,7 @@ function set_current_page_link($newqs = array(), $replace = false)
 {
 	$allqet = $newqs;
 	if ($replace == false) {
-		$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+		$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 		unset($get['request_uri']);
 		$allqet = array_merge($get, $newqs);
 	}
@@ -929,7 +930,7 @@ function set_current_page_link($newqs = array(), $replace = false)
  */
 function get_current_url()
 {
-	$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+	$get =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 	unset($get['request_uri']);
 	$qs = null;
 	if(!empty($get)){
@@ -993,4 +994,23 @@ function is_mobile()
 function is_ajax()
 {
 	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+}
+
+/**
+ * Safely sanitizes string inputs to replace FILTER_SANITIZE_STRING in PHP 8.1+
+ * @param mixed $var
+ * @return mixed
+ */
+function sanitize_string($var)
+{
+	if ($var === null) {
+		return null;
+	}
+	if ($var === false) {
+		return false;
+	}
+	if (is_array($var)) {
+		return array_map('sanitize_string', $var);
+	}
+	return strip_tags((string) $var);
 }
