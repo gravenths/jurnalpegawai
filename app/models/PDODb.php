@@ -22,10 +22,10 @@ class PDODb
      */
     private $connectionParams = array(
         'type' => 'mysql',
-        'host' => localhost,
-        'username' => root,
+        'host' => 'localhost',
+        'username' => 'root',
         'password' => '',
-        'dbname' => u945146722_jurnalpegawai,
+        'dbname' => 'u945146722_jurnalpegawai',
         'port' => 3306,
         'charset' => null
     );
