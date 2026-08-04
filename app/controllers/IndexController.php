@@ -22,7 +22,7 @@ class IndexController extends BaseController{
 	}
 	private function login_user($username , $password_text, $rememberme = false){
 		$db = $this->GetModel();
-		$username = filter_var($username, FILTER_SANITIZE_STRING);
+		$username = strip_tags($username ?? '');
 		$db->where("kodeguru", $username)->orWhere("email", $username);
 		$tablename = $this->tablename;
 		$user = $db->getOne($tablename);

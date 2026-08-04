@@ -139,7 +139,7 @@ class BaseController{
 		if(is_post_request()){
 			Csrf::cross_check();
 			$this->post = new stdClass;
-			$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+			$post = sanitize_string(filter_input_array(INPUT_POST, FILTER_DEFAULT));
 			if(!empty($post)){
 				foreach($post as $obj => $val){
 					$this->post->$obj = $val; //pass each GET data to the current request class property
@@ -207,7 +207,7 @@ class BaseController{
 	function set_request($get = array()){
 		$this->request = new stdClass;
 		// filter all values of the GET Request
-		$get = filter_var_array($get, FILTER_SANITIZE_STRING);
+		$get = sanitize_string($get);
 		if(!empty($get)){
 			foreach($get as $obj => $val){
 				$this->request->$obj = $val; //pass each request data to the current page request property

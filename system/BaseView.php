@@ -5,6 +5,7 @@ use Dompdf\Dompdf;
 /**
  * Application Base View
  */
+#[AllowDynamicProperties]
 class BaseView
 {
 	/**
@@ -264,13 +265,20 @@ class BaseView
 	 */
 	public $force_print = false;
 
+	/**
+	 * Dynamic properties explicitly declared for PHP 8 compatibility
+	 */
+	public $view_args;
+	public $request_uri;
+	public $csrf_token;
+
 
 	
 
 	function __construct($arg = null)
 	{
 		// Pass All Query String Data to the View.
-		$get = $this->form_data =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);;
+		$get = $this->form_data =  sanitize_string(filter_input_array(INPUT_GET, FILTER_DEFAULT));
 		if (!empty($get)) {
 			foreach ($get as $obj => $val) {
 				$this->$obj = $val;
@@ -497,7 +505,7 @@ class BaseView
 	 */
 	public function set_field_value($fieldname, $default_value = null, $index = null)
 	{
-		$post =  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+		$post =  sanitize_string($_REQUEST);
 		if (!empty($this->page_props[$fieldname])) {
 			return $this->page_props[$fieldname];
 		} elseif (!empty($post[$fieldname])) {
@@ -518,7 +526,7 @@ class BaseView
 	 */
 	public function set_field_checked($fieldname, $value, $default_value = null)
 	{
-		$post =  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+		$post =  sanitize_string($_REQUEST);
 		$req_val = null;
 		if (!empty($this->page_props[$fieldname])) {
 			$req_val = $this->page_props[$fieldname];
@@ -545,7 +553,7 @@ class BaseView
 	 */
 	public function set_field_selected($fieldname, $value, $default_value = 0)
 	{
-		$post =  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+		$post =  sanitize_string($_REQUEST);
 		$req_val = null;
 		if (!empty($this->page_props[$fieldname])) {
 			$req_val = $this->page_props[$fieldname];

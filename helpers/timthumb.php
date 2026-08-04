@@ -1095,9 +1095,9 @@ class timthumb {
 	protected function securityChecks(){
 	}
 	protected function param($property, $default = ''){
-		$get =  filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
-		if (isset ($get[$property])) {
-			return $get[$property];
+		$get = filter_input_array(INPUT_GET, FILTER_DEFAULT);
+		if (is_array($get) && isset($get[$property])) {
+			return is_array($get[$property]) ? array_map('strip_tags', $get[$property]) : strip_tags($get[$property] ?? '');
 		} else {
 			return $default;
 		}
