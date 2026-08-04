@@ -8,6 +8,7 @@
 
 class Pagination
 {
+	public $route;
 	/**
 	     The current page that has the pagination
 	 * @var int

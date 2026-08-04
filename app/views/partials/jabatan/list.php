@@ -1,5 +1,9 @@
 <?php 
 //check if current user role is allowed access to the pages
+/** 
+ * @var object $this 
+ * @property object $route
+ */
 $can_add = ACL::is_allowed("jabatan/add");
 $can_edit = ACL::is_allowed("jabatan/edit");
 $can_view = ACL::is_allowed("jabatan/view");
