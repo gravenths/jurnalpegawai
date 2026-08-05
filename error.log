@@ -1,0 +1,57 @@
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Warning:  Undefined variable $data in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Warning:  Trying to access array offset on null in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Warning:  Array to string conversion in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 283
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Options::__construct(): Implicitly marking parameter $attributes as nullable is deprecated, the explicit nullable type must be used instead in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Options.php on line 292
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Adapter\CPDF::__construct(): Optional parameter $paper declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Adapter\CPDF.php on line 182
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Adapter\CPDF::__construct(): Optional parameter $orientation declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Adapter\CPDF.php on line 182
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Canvas::__construct(): Optional parameter $paper declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Canvas.php on line 27
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Canvas::__construct(): Optional parameter $orientation declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Canvas.php on line 27
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addImagePng(): Optional parameter $w declared before required parameter $img is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 4723
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addImagePng(): Optional parameter $h declared before required parameter $img is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 4723
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addPngFromBuf(): Optional parameter $w declared before required parameter $data is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5066
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addPngFromBuf(): Optional parameter $h declared before required parameter $data is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5066
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $w declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $h declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $channels declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Deprecated:  Dompdf\Css\Stylesheet::create_style(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Css\Stylesheet.php on line 313
+[05-Aug-2026 10:23:00 Asia/Makassar] PHP Fatal error:  Uncaught Dompdf\Exception: mb_detect_encoding(): Passing null to parameter #1 ($string) of type string is deprecated 8192 in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Helpers.php:507
+Stack trace:
+#0 [internal function]: Dompdf\Helpers::record_warnings(8192, 'mb_detect_encod...', 'C:\\laragon\\www\\...', 429)
+#1 C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Dompdf.php(429): mb_detect_encoding(NULL, NULL, true)
+#2 C:\laragon\www\jurnalpegawai\system\BaseView.php(309): Dompdf\Dompdf->loadHtml(NULL)
+#3 C:\laragon\www\jurnalpegawai\index.php(118): BaseView->render('errors/error_se...', Object(Dompdf\Exception), 'info_layout.php')
+#4 [internal function]: exception_handler(Object(Dompdf\Exception))
+#5 {main}
+  thrown in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Helpers.php on line 507
+[05-Aug-2026 10:23:10 Asia/Makassar] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\jurnalpegawai\libs\XLSXWriter.php on line 760
+[05-Aug-2026 10:23:10 Asia/Makassar] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\jurnalpegawai\libs\XLSXWriter.php on line 760
+[05-Aug-2026 10:23:10 Asia/Makassar] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\jurnalpegawai\libs\XLSXWriter.php on line 760
+[05-Aug-2026 10:23:10 Asia/Makassar] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\laragon\www\jurnalpegawai\libs\XLSXWriter.php on line 760
+[05-Aug-2026 10:23:26 Asia/Makassar] PHP Warning:  Undefined variable $data in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:26 Asia/Makassar] PHP Warning:  Trying to access array offset on null in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:26 Asia/Makassar] PHP Warning:  Array to string conversion in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 283
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Warning:  Undefined variable $data in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Warning:  Trying to access array offset on null in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 265
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Warning:  Array to string conversion in C:\laragon\www\jurnalpegawai\app\views\layouts\report_layout.php on line 283
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Options::__construct(): Implicitly marking parameter $attributes as nullable is deprecated, the explicit nullable type must be used instead in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Options.php on line 292
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Adapter\CPDF::__construct(): Optional parameter $paper declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Adapter\CPDF.php on line 182
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Adapter\CPDF::__construct(): Optional parameter $orientation declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Adapter\CPDF.php on line 182
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Canvas::__construct(): Optional parameter $paper declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Canvas.php on line 27
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Canvas::__construct(): Optional parameter $orientation declared before required parameter $dompdf is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Canvas.php on line 27
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addImagePng(): Optional parameter $w declared before required parameter $img is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 4723
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addImagePng(): Optional parameter $h declared before required parameter $img is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 4723
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addPngFromBuf(): Optional parameter $w declared before required parameter $data is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5066
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addPngFromBuf(): Optional parameter $h declared before required parameter $data is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5066
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $w declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $h declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Cpdf::addJpegImage_common(): Optional parameter $channels declared before required parameter $imgname is implicitly treated as a required parameter in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\lib\Cpdf.php on line 5410
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Deprecated:  Dompdf\Css\Stylesheet::create_style(): Implicitly marking parameter $parent as nullable is deprecated, the explicit nullable type must be used instead in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Css\Stylesheet.php on line 313
+[05-Aug-2026 10:23:32 Asia/Makassar] PHP Fatal error:  Uncaught Dompdf\Exception: mb_detect_encoding(): Passing null to parameter #1 ($string) of type string is deprecated 8192 in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Helpers.php:507
+Stack trace:
+#0 [internal function]: Dompdf\Helpers::record_warnings(8192, 'mb_detect_encod...', 'C:\\laragon\\www\\...', 429)
+#1 C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Dompdf.php(429): mb_detect_encoding(NULL, NULL, true)
+#2 C:\laragon\www\jurnalpegawai\system\BaseView.php(309): Dompdf\Dompdf->loadHtml(NULL)
+#3 C:\laragon\www\jurnalpegawai\index.php(118): BaseView->render('errors/error_se...', Object(Dompdf\Exception), 'info_layout.php')
+#4 [internal function]: exception_handler(Object(Dompdf\Exception))
+#5 {main}
+  thrown in C:\laragon\www\jurnalpegawai\vendor\dompdf\dompdf\src\Helpers.php on line 507

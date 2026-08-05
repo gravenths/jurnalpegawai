@@ -82,3 +82,39 @@ $current_page = $this->set_current_page_link();
         </div>
     </div>
 </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Aktivitas Terbaru</h5>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Hari</th>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Aktivitas</th>
+                        <th>Tempat</th>
+                    </tr>
+                </thead>
+                <tbody>
+               <?php if(!empty($this->view_data->recent_activities)): ?>
+                <?php $no = 1; foreach($this->view_data->recent_activities as $row): ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td><?php echo $row['hari']; ?></td>
+                    <td><?php echo $row['tanggal']; ?></td>
+                    <td><?php echo $row['waktu']; ?></td>
+                    <td><?php echo $row['aktivitas']; ?></td>
+                    <td><?php echo $row['tempat']; ?></td>
+                 </tr>
+                    <?php endforeach; ?>
+              <?php else: ?>
+                    <tr><td colspan="6" class="text-center">Belum ada aktivitas</td></tr>
+              <?php endif; ?>
+                </tbody>
+            </table>
+            <a href="<?php print_link('agenda/') ?>" class="btn btn-sm btn-secondary">Lihat Semua Aktivitas</a>
+        </div>
+    </div>
+</div>

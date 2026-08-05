@@ -86,36 +86,7 @@ $redirect_to = $this->redirect_to;
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group ">
-                                            <div class="row">
-                                                <div class="col-sm-4">
-                                                    <label class="control-label" for="kodejabatan">Jabatan <span class="text-danger">*</span></label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <div class="">
-                                                        <select required=""  id="ctrl-kodejabatan" name="kodejabatan"  placeholder="Pilih jabatan ..."    class="custom-select" >
-                                                            <option value="">Pilih jabatan ...</option>
-                                                            <?php
-                                                            $rec = $data['kodejabatan'];
-                                                            $kodejabatan_options = $comp_model -> agenda_kodejabatan_option_list();
-                                                            if(!empty($kodejabatan_options)){
-                                                            foreach($kodejabatan_options as $option){
-                                                            $value = (!empty($option['value']) ? $option['value'] : null);
-                                                            $label = (!empty($option['label']) ? $option['label'] : $value);
-                                                            $selected = ( $value == $rec ? 'selected' : null );
-                                                            ?>
-                                                            <option 
-                                                                <?php echo $selected; ?> value="<?php echo $value; ?>"><?php echo $label; ?>
-                                                            </option>
-                                                            <?php
-                                                            }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="form-group ">
                                             <div class="row">
                                                 <div class="col-sm-4">

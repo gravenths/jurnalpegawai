@@ -153,7 +153,7 @@ $show_pagination = $this->show_pagination;
                                                     <th  class="td-tanggal"> Tanggal</th>
                                                     <th  class="td-waktu"> Waktu</th>
                                             <!--        <th  class="td-kodeguru"> Pegawai</th>  -->
-                                                    <th  class="td-kodejabatan"> Jabatan</th>
+                                         
                                                     <th  class="td-aktivitas"> Aktivitas</th>
                                                     <th  class="td-tempat"> Tempat</th>
                                                     <th class="td-btn"></th>
@@ -234,22 +234,7 @@ $show_pagination = $this->show_pagination;
                                                                 <i class="fa fa-eye"></i> <?php echo $data['guru_nama'] ?>
                                                             </a>
                                                         </td>       -->
-                                                        <td class="td-kodejabatan">
-                                                            <span <?php if($can_edit){ ?> data-source='<?php print_link('api/json/agenda_kodejabatan_option_list'); ?>' 
-                                                                data-value="<?php echo $data['kodejabatan']; ?>" 
-                                                                data-pk="<?php echo $data['kodeagenda'] ?>" 
-                                                                data-url="<?php print_link("agenda/editfield/" . urlencode($data['kodeagenda'])); ?>" 
-                                                                data-name="kodejabatan" 
-                                                                data-title="Pilih jabatan ..." 
-                                                                data-placement="left" 
-                                                                data-toggle="click" 
-                                                                data-type="select" 
-                                                                data-mode="popover" 
-                                                                data-showbuttons="left" 
-                                                                class="is-editable" <?php } ?>>
-                                                                <?php echo $data['kodejabatan']; ?> 
-                                                            </span>
-                                                        </td>
+                                                       
                                                         <td class="td-aktivitas">
                                                             <span <?php if($can_edit){ ?> data-pk="<?php echo $data['kodeagenda'] ?>" 
                                                                 data-url="<?php print_link("agenda/editfield/" . urlencode($data['kodeagenda'])); ?>" 

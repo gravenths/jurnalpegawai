@@ -456,7 +456,7 @@ class BaseView
 	{
 		if ($this->format == "html"){
 			$qs = parse_url($url, PHP_URL_QUERY);
-			parse_str($qs, $get);
+			parse_str($qs ?? '', $get);
 			$request = array();
 			if (!empty($get)) { //build new $_GET array from the url query string 
 				foreach ($get as $key => $val) {
@@ -650,10 +650,16 @@ class BaseView
 		$page_html = str_replace('&', '&amp;', $page_html);
 		$page_html = str_replace(array('_lt_', '_gt_', '_amp_'), array('&lt;', '&gt;', '&amp;'), $page_html);
 		// Load DOM
-		$orignalLibEntityLoader = libxml_disable_entity_loader(true);
+		if (PHP_VERSION_ID < 80000) {
+    	$orignalLibEntityLoader = libxml_disable_entity_loader(true);
+		}
+
 		$doc = new \DOMDocument();
 		@$doc->loadHTML($page_html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOEMPTYTAG);
-		libxml_disable_entity_loader($orignalLibEntityLoader);
+
+		if (PHP_VERSION_ID < 80000) {
+    	libxml_disable_entity_loader($orignalLibEntityLoader);
+		}
 		//extract only the report part
 		$page_body = $doc->getElementById("page-report-body");
 		if (!empty($page_body)) {

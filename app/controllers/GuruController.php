@@ -4,6 +4,9 @@
  * @category  Controller
  */
 class GuruController extends SecureController{
+	public $rules_array = array();
+	public $sanitize_array = array();
+
 	function __construct(){
 		parent::__construct();
 		$this->tablename = "guru";
@@ -175,6 +178,12 @@ class GuruController extends SecureController{
 			//update modeldata with the password hash
 			$modeldata['password'] = $this->modeldata['password'] = password_hash($password_text , PASSWORD_DEFAULT);
 			//Check if Duplicate Record Already Exit In The Database
+
+			if(empty($modeldata['photo'])){
+    		$modeldata['photo'] = $this->modeldata['photo'] = 'default.jpg';
+			}
+			//Foto ga wajib diisi jadi kalau kosong set default.jpg
+
 			$db->where("kodeguru", $modeldata['kodeguru']);
 			if($db->has($tablename)){
 				$this->view->page_error[] = $modeldata['kodeguru']." Already exist!";
