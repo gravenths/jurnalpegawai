@@ -1,23 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Jurnal Aktivitas Pegawai</title>
-  <link rel="stylesheet" href="css/bootstrap.css" media="screen">
-  <link rel="stylesheet" href="css/style.css" media="screen">
-  <link rel="stylesheet" href="css/bootswatch.min.css">
-  <link rel="stylesheet" href="css/jasny-bootstrap.min.css">
-  <link rel="icon" type="image/png" href="assets/images/logo-sman8.png">
-  <script type="text/javascript" async="" src="js/ga.js"></script>
-  <script src="js/jquery-1.10.2.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/bootswatch.js"></script>
-</head>
-<body>
-
 <?php
 	session_start(); // Start or Resume Session
 	
@@ -27,7 +7,8 @@
 	require ('vendor/autoload.php');
 
 	//Error reporting for debugging during development
-	if(DEVELOPMENT_MODE == true){
+	$is_export_request = isset($_GET['format']) && in_array(strtolower($_GET['format']), array('pdf', 'excel', 'word', 'csv', 'print', 'json'));
+	if(DEVELOPMENT_MODE == true && !$is_export_request){
 		ini_set('display_errors', 1);
 		ini_set('display_startup_errors', 1);
 		error_reporting(E_ALL); 
@@ -122,9 +103,38 @@
 	//Display application exception in a custom page
 	set_exception_handler('exception_handler');
 
+	// Only output the HTML page wrapper for normal (non-export) requests.
+	// Export requests (PDF, Excel, Word, CSV, Print) send their own headers/content
+	// and must not have any HTML prepended or appended to the response.
+	if (!$is_export_request) {
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Jurnal Aktivitas Pegawai</title>
+  <link rel="stylesheet" href="css/bootstrap.css" media="screen">
+  <link rel="stylesheet" href="css/style.css" media="screen">
+  <link rel="stylesheet" href="css/bootswatch.min.css">
+  <link rel="stylesheet" href="css/jasny-bootstrap.min.css">
+  <link rel="icon" type="image/png" href="assets/images/logo-sman8.png">
+  <script type="text/javascript" async="" src="js/ga.js"></script>
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootswatch.js"></script>
+</head>
+<body>
+<?php } ?>
+<?php
+
 	$page = new Router;
 	$page->init(); // Bootstrap Page with the Current URL
 	
+	if (!$is_export_request) {
 ?>
 </body>
 </html>
+<?php } ?>

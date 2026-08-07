@@ -262,11 +262,8 @@
 				</th>
 				<th align="right" valign="middle">
 					<div class="company-info">
-					<!--	<div>Nama: <?php echo $data ['kodeguru']; ?></span></div>
-						<div>Email: <span class="sub-title">info@<?php echo SITE_NAME ?></span></div>
-						<div>Web: <span class="sub-title"><?php echo SITE_ADDR ?></span></div>
-					</div>		-->
-					
+						<!-- info tambahan dapat diisi di sini -->
+					</div>
 				</th>
 			</tr>
 		</table>
@@ -277,11 +274,7 @@
 			<tr>
 				<td><?php echo $this->report_title; ?><br></td>
 			</tr>
-			<!-- <tr>
-				<td>Jabatan</td>
-				<td>:</td>
-				<td><?php echo $this->report_jabatan; ?></td>
-			</tr> -->
+			<!-- baris tambahan dapat diaktifkan di sini -->
 		</table>
 	</div>
 	<div id="report-body">

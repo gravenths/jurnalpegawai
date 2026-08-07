@@ -34,6 +34,18 @@ $redirect_to = $this->redirect_to;
                                 <div class="form-group ">
                                     <div class="row">
                                         <div class="col-sm-4">
+                                            <label class="control-label" for="kodejabatan">Kode Jabatan <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="">
+                                                <input id="ctrl-kodejabatan"  value="<?php  echo $this->set_field_value('kodejabatan',""); ?>" type="number" placeholder="Masukkan Kode Jabatan"  required="" name="kodejabatan"  class="form-control " />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="form-group ">
+                                    <div class="row">
+                                        <div class="col-sm-4">
                                             <label class="control-label" for="namajabatan">Nama Jabatan <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-sm-8">

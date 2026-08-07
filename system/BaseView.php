@@ -31,6 +31,12 @@ class BaseView
 	public $format = "html";
 
 	/**
+	 * Records pre-rendered for PDF export (set by PDF handler before layout include)
+	 * @var array
+	 */
+	public $pdf_records = array();
+
+	/**
 	 * Current page limit count
 	 * @var  int
 	 */
@@ -303,17 +309,24 @@ class BaseView
 			return;
 		} 
 		elseif ($page_format == "pdf") {
-			$report_body = $this->parse_report_html(); //get exportable content
+			// Render PDF directly from data — bypass parse_report_html() + DOMDocument
+			// entirely to avoid libxml restructuring the complex Bootstrap view HTML,
+			// which caused elements to render in the wrong order / overlap in Dompdf.
+			$this->pdf_records = $this->parse_report_records();
+
+			ob_start();
+			include(LAYOUTS_DIR . 'pdf_report_layout.php');
+			$pdf_html = ob_get_clean();
+
 			$filename = $this->report_filename;
 			$dompdf = new Dompdf();
-			$dompdf->loadHtml($report_body);
-			$dompdf->set_option('isRemoteEnabled', true); //allow to display external images
-			// (Optional) Setup the paper size and orientation
+			$dompdf->set_option('isRemoteEnabled', true);
+			$dompdf->set_option('isHtml5ParserEnabled', true);
+			$dompdf->set_option('defaultFont', 'Arial');
+			$dompdf->loadHtml($pdf_html, 'UTF-8');
 			$dompdf->setPaper($this->report_paper_size, $this->report_orientation);
-			// Render the HTML as PDF
 			$dompdf->render();
-			// Output the generated PDF to Browser
-			$dompdf->stream("$filename.pdf");
+			$dompdf->stream("$filename.pdf", ['Attachment' => true]);
 			return;
 		} 
 		elseif ($page_format == "word") {
@@ -336,40 +349,106 @@ class BaseView
 			echo $csv_data;
 			return;
 		} elseif ($page_format == "excel") {
-			/* https://github.com/mk-j/PHP_XLSXWriter
-			Lightwight XLSX Excel Spreadsheet Writer in PHP
-			This library is designed to be lightweight, and have minimal memory usage.
-			 */
 			$filename = $this->report_filename . ".xlsx";
-			$sheet_name = $this->report_title;
-			//excel headers
+			// Sheet names in Excel: max 31 chars, no \ / * ? : [ ]
+			$sheet_name = mb_substr(preg_replace('/[\\\\\/*?:\[\]]/', '', $this->report_title), 0, 31);
+			if (empty($sheet_name)) { $sheet_name = 'Data'; }
+
 			header('Content-disposition: attachment; filename="' . XLSXWriter::sanitize_filename($filename) . '"');
 			header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 			header('Content-Transfer-Encoding: binary');
 			header('Cache-Control: must-revalidate');
 			header('Pragma: public');
-			$records = $this->parse_report_records(); //get exportable records
-			//Simple/Advanced Cell Formats:
-			/* $header = array(
-				'created'=>'date',
-				'product_id'=>'integer',
-				'quantity'=>'#,##0',
-				'amount'=>'price',
-				'description'=>'string',
-				'tax'=>'[$$-1009]#,##0.00;[RED]-[$$-1009]#,##0.00',
-			  ); */
-			$arr_titles = array_keys(current($records));// get the table header from the record.
-			$headers = array_fill_keys($arr_titles, 'string'); //setting all headers to cell type of string
+
+			$records = $this->parse_report_records();
+			$first = current($records);
+			if ($first === false) { $writer = new XLSXWriter(); $writer->writeToStdOut(); return; }
+			$arr_titles = array_keys($first);
+			$col_count  = count($arr_titles);
+
+			// Default column width 20, last column gets extra room
+			$col_widths = array_fill(0, $col_count, 20);
 
 			$writer = new XLSXWriter();
 			$writer->setAuthor(SITE_NAME);
-			$writer->writeSheetHeader($sheet_name, $headers);
+
+			// Initialize the sheet (col types) without writing the header row yet
+			$col_types = array_fill_keys($arr_titles, 'string');
+			$writer->writeSheetHeader($sheet_name, $col_types, [
+				'suppress_row' => true,
+				'widths'       => $col_widths,
+			]);
+
+			// ── Row 1: Instansi name (bold, large) ────────────────────────
+			$r = array_fill(0, $col_count, '');
+			$r[0] = SITE_NAME;
+			$writer->writeSheetRow($sheet_name, $r, ['font-style' => 'bold', 'font-size' => 13, 'height' => 18]);
+
+			// ── Row 2: Sub-title (italic) ──────────────────────────────────
+			$r = array_fill(0, $col_count, '');
+			$r[0] = 'SMA Negeri 8 Banjarmasin';
+			$writer->writeSheetRow($sheet_name, $r, ['font-style' => 'italic']);
+
+			// ── Row 3: Empty ───────────────────────────────────────────────
+			$writer->writeSheetRow($sheet_name, array_fill(0, $col_count, ''));
+
+			// ── Row 4: Report title (bold) ────────────────────────────────
+			$r = array_fill(0, $col_count, '');
+			$r[0] = $this->report_title;
+			$writer->writeSheetRow($sheet_name, $r, ['font-style' => 'bold', 'font-size' => 11, 'height' => 16]);
+
+			// ── Row 5: Empty ───────────────────────────────────────────────
+			$writer->writeSheetRow($sheet_name, array_fill(0, $col_count, ''));
+
+			// ── Row 6: Column headers (blue bg, white text, bold, borders) ─
+			$hdr_style = [
+				'font-style'   => 'bold',
+				'fill'         => '#2E75B6',
+				'color'        => '#FFFFFF',
+				'border'       => 'left,right,top,bottom',
+				'border-style' => 'thin',
+				'border-color' => '#000000',
+				'height'       => 14,
+			];
+			$writer->writeSheetRow($sheet_name, $arr_titles, $hdr_style);
+
+			// ── Data rows (thin border) ───────────────────────────────────
+			$data_style = [
+				'border'       => 'left,right,top,bottom',
+				'border-style' => 'thin',
+				'border-color' => '#000000',
+			];
 			foreach ($records as $row) {
-				$writer->writeSheetRow($sheet_name, $row);
+				$writer->writeSheetRow($sheet_name, array_values($row), $data_style);
 			}
+
+			// ── Spacer ────────────────────────────────────────────────────
+			$writer->writeSheetRow($sheet_name, array_fill(0, $col_count, ''));
+			$writer->writeSheetRow($sheet_name, array_fill(0, $col_count, ''));
+
+			// ── Signature section (right-side columns) ────────────────────
+			$sig = max(0, $col_count - 2); // put signature in last-or-second-to-last col
+			$r = array_fill(0, $col_count, '');
+			$r[$sig] = 'Banjarmasin, ' . date('d-m-Y');
+			$writer->writeSheetRow($sheet_name, $r);
+
+			$r = array_fill(0, $col_count, '');
+			$r[$sig] = 'Kepala SMA Negeri 8 Banjarmasin';
+			$writer->writeSheetRow($sheet_name, $r);
+
+			for ($i = 0; $i < 4; $i++) {
+				$writer->writeSheetRow($sheet_name, array_fill(0, $col_count, ''));
+			}
+
+			$r = array_fill(0, $col_count, '');
+			$r[$sig] = 'H. SUTIKNO, S.Pd., M.Pd.';
+			$writer->writeSheetRow($sheet_name, $r, ['font-style' => 'bold']);
+
+			$r = array_fill(0, $col_count, '');
+			$r[$sig] = 'NIP. 19710317 199702 1 005';
+			$writer->writeSheetRow($sheet_name, $r);
+
 			$writer->writeToStdOut();
-			//$writer->writeToFile('example.xlsx');//to save locally
-			//echo $writer->writeToString();//to output to a variable
 			return;
 		}
 
@@ -661,7 +740,11 @@ class BaseView
     	libxml_disable_entity_loader($orignalLibEntityLoader);
 		}
 		//extract only the report part
-		$page_body = $doc->getElementById("page-report-body");
+		// Use XPath instead of getElementById because LIBXML_HTML_NODEFDTD prevents
+		// id attributes from being typed as IDs, making getElementById unreliable.
+		$xpath_find = new DOMXPath($doc);
+		$found_nodes = $xpath_find->query('//*[@id="page-report-body"]');
+		$page_body = ($found_nodes->length > 0) ? $found_nodes->item(0) : null;
 		if (!empty($page_body)) {
 			$xpath = new DOMXPath($page_body->ownerDocument);
 			$hide_columns = 'contains(attribute::class, "td-btn") or contains(attribute::class, "td-checkbox")';
@@ -693,7 +776,8 @@ class BaseView
 			$report_body =  $this->innerHTML($page_body);
 			//now we are done with manipulating the report body
 			//place the report body inside the report layout
-			$layout_body = $doc->getElementById("report-body");
+			$layout_nodes = $xpath->query('//*[@id="report-body"]');
+			$layout_body = ($layout_nodes->length > 0) ? $layout_nodes->item(0) : null;
 			$this->setInnerHTML($layout_body, $report_body);
 			$docf = $doc->saveHTML();
 			return html_entity_decode($docf); //get the html of the report
@@ -706,7 +790,7 @@ class BaseView
 	 * Remove unwanted fields
 	 * @return array
 	 */
-	private function parse_report_records()
+	protected function parse_report_records()
 	{
 		$records = array();
 		if (isset($this->view_data->records)) {

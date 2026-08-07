@@ -90,6 +90,9 @@ class AgendaController extends SecureController{
 		$this->view->report_layout = "report_layout.php";
 		$this->view->report_paper_size = "A4";
 		$this->view->report_orientation = "portrait";
+		// Kolom yang diambil dari query tapi TIDAK ditampilkan di view (di-comment atau disembunyikan).
+		// Disembunyikan juga dari export PDF & Excel supaya sesuai tampilan halaman.
+		$this->view->report_hidden_fields = array('kodeagenda', 'kodeguru', 'guru_nama', 'kodejabatan');
 		$this->render_view("agenda/list.php", $data); //render the full page
 	}
 	/**

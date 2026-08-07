@@ -132,6 +132,18 @@ class BaseController{
 	 */
 	public $filter_rules = false;
 
+	/**
+	 * Validation rules array for form input
+	 * @var array
+	 */
+	public $rules_array = array();
+
+	/**
+	 * Sanitization rules array for form input
+	 * @var array
+	 */
+	public $sanitize_array = array();
+
 
 	function __construct(){
 		$this->view = new BaseView; //initialize the view renderer

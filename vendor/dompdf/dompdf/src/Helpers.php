@@ -502,8 +502,9 @@ class Helpers
      */
     public static function record_warnings($errno, $errstr, $errfile, $errline)
     {
-        // Not a warning or notice
-        if (!($errno & (E_WARNING | E_NOTICE | E_USER_NOTICE | E_USER_WARNING))) {
+        // Not a warning or notice (also treat E_DEPRECATED / E_USER_DEPRECATED as non-fatal
+        // so PHP 8 deprecation notices do not abort rendering)
+        if (!($errno & (E_WARNING | E_NOTICE | E_USER_NOTICE | E_USER_WARNING | E_DEPRECATED | E_USER_DEPRECATED))) {
             throw new Exception($errstr . " $errno");
         }
 

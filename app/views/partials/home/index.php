@@ -6,10 +6,11 @@ $current_page = $this->set_current_page_link();
 <div>
     <div  class="bg-light p-3 mb-3">
         <div class="container">
-            <div class="row ">
+            			<div class="row ">
                 <div class="col-md-12 comp-grid">
                     <h4 ></h4>
                 </div>
+                <?php if(USER_ROLE == 1): // Hanya administrator yang bisa lihat kartu Pegawai dan Jabatan ?>
                 <div class="col-md-3 col-sm-4 comp-grid">
                     <?php $rec_count = $comp_model->getcount_guru();  ?>
                     <a class="animated zoomIn record-count alert alert-info"  href="<?php print_link("guru/") ?>">
@@ -61,6 +62,7 @@ $current_page = $this->set_current_page_link();
                         </div>
                     </a>
                 </div>
+                <?php endif; // end admin check ?>
                 <div class="col-md-3 col-sm-4 comp-grid">
                     <?php $rec_count = $comp_model->getcount_agenda();  ?>
                     <a class="animated zoomIn record-count card bg-success text-white"  href="<?php print_link("agenda/") ?>">
@@ -115,6 +117,7 @@ $current_page = $this->set_current_page_link();
                 </tbody>
             </table>
             <a href="<?php print_link('agenda/') ?>" class="btn btn-sm btn-secondary">Lihat Semua Aktivitas</a>
+            <a href="<?php print_link('agenda/add') ?>" class="btn btn-sm btn-success ml-2"><i class="fa fa-plus"></i> Tambah Aktivitas</a>
         </div>
     </div>
 </div>

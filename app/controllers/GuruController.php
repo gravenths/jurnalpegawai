@@ -4,8 +4,6 @@
  * @category  Controller
  */
 class GuruController extends SecureController{
-	public $rules_array = array();
-	public $sanitize_array = array();
 
 	function __construct(){
 		parent::__construct();
@@ -184,6 +182,13 @@ class GuruController extends SecureController{
 			}
 			//Foto ga wajib diisi jadi kalau kosong set default.jpg
 
+			if(empty($modeldata['nip'])){
+				$modeldata['nip'] = $this->modeldata['nip'] = '-';
+			}
+			if(empty($modeldata['nohp'])){
+				$modeldata['nohp'] = $this->modeldata['nohp'] = '-';
+			}
+
 			$db->where("kodeguru", $modeldata['kodeguru']);
 			if($db->has($tablename)){
 				$this->view->page_error[] = $modeldata['kodeguru']." Already exist!";
@@ -240,6 +245,12 @@ class GuruController extends SecureController{
 				'photo' => 'sanitize_string',
 			);
 			$modeldata = $this->modeldata = $this->validate_form($postdata);
+			if(empty($modeldata['nip'])){
+				$modeldata['nip'] = $this->modeldata['nip'] = '-';
+			}
+			if(empty($modeldata['nohp'])){
+				$modeldata['nohp'] = $this->modeldata['nohp'] = '-';
+			}
 			//Check if Duplicate Record Already Exit In The Database
 			if(isset($modeldata['kodeguru'])){
 				$db->where("kodeguru", $modeldata['kodeguru'])->where("kodeguru", $rec_id, "!=");

@@ -118,12 +118,14 @@ class jabatanController extends SecureController{
 			$tablename = $this->tablename;
 			$request = $this->request;
 			//fillable fields
-			$fields = $this->fields = array("namajabatan");
+			$fields = $this->fields = array("kodejabatan","namajabatan");
 			$postdata = $this->format_request_data($formdata);
 			$this->rules_array = array(
+				'kodejabatan' => 'required',
 				'namajabatan' => 'required',
 			);
 			$this->sanitize_array = array(
+				'kodejabatan' => 'sanitize_string',
 				'namajabatan' => 'sanitize_string',
 			);
 			$this->filter_vals = true; //set whether to remove empty fields
