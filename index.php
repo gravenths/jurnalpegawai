@@ -1,18 +1,18 @@
 <?php
 	session_start(); // Start or Resume Session
-	
+
 	require('config.php');
-	
+
 	//composer auto load libraries
 	require ('vendor/autoload.php');
 
 	//Error reporting for debugging during development
-	$is_export_request = isset($_GET['format']) && in_array(strtolower($_GET['format']), array('pdf', 'excel', 'word', 'csv', 'print', 'json'));
+	$is_export_request = isset($_GET['format']) && in_array(strtolower($_GET['format']), array('pdf', 'excel', 'word', 'csv', 'json'));
 	if(DEVELOPMENT_MODE == true && !$is_export_request){
 		ini_set('display_errors', 1);
 		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL); 
-	} 
+		error_reporting(E_ALL);
+	}
 	else {
 		//errors will not be displayed on the pages but log to files
 		error_reporting(E_ALL);
@@ -24,7 +24,7 @@
 	if(!empty(DEFAULT_TIMEZONE)){
 		date_default_timezone_set(DEFAULT_TIMEZONE);
 	}
-	
+
 	// Application configurations Settings
 
 	/**
@@ -48,7 +48,7 @@
 			require $filename;
 		}
 	}
-	
+
 	/**
      * Initialize Libraries Classes From Libs Dir
      * @return boolean
@@ -59,7 +59,7 @@
 			require $filename;
 		}
 	}
-	
+
 	/**
      * Initialize Helper Classes From helper Dir
      * @return null
@@ -70,29 +70,29 @@
 			require $filename;
 		}
 	}
-	
+
 	// Register Autoloaders
 	spl_autoload_register("autoloadModel");
 	spl_autoload_register("autoloadController");
 	spl_autoload_register("autoloadLibrary");
 	spl_autoload_register("autoloadHelper");
-	
-	
-	
+
+
+
 	//Initialize Global Functions Helpers
 	require(HELPERS_DIR . 'Functions.php');
 
 	$lang = new Lang;// Initialize language class and load default language phrases
 	$csrf = new Csrf;// Initialize Csrf class and generate new application token
-	$csrf_token = $csrf::$token; 
-	
+	$csrf_token = $csrf::$token;
+
 
 	// Application Core Files
 	require(SYSTEM_DIR . 'BaseController.php');
 	require(SYSTEM_DIR . 'SecureController.php');
 	require(SYSTEM_DIR . 'BaseView.php');
 	require(SYSTEM_DIR . 'Router.php');
-	
+
 	//display page with the exceptions
 	function exception_handler($exception){
 		$view = new BaseView();
@@ -132,7 +132,7 @@
 
 	$page = new Router;
 	$page->init(); // Bootstrap Page with the Current URL
-	
+
 	if (!$is_export_request) {
 ?>
 </body>

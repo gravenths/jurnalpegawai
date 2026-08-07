@@ -1014,3 +1014,23 @@ function sanitize_string($var)
 	}
 	return strip_tags((string) $var);
 }
+
+/**
+ * Bersihkan karakter mojibake yang muncul dari copy-paste Microsoft Word.
+ * Paling umum: UTF-8 non-breaking space (\xC2\xA0) yang ter-render sebagai "Â".
+ * Diterapkan di jalur export supaya data yang sudah terlanjur tersimpan di DB
+ * tetap tampil bersih di PDF/Word/Excel/Print.
+ * @param string $text
+ * @return string
+ */
+function clean_mojibake($text)
+{
+	if (!is_string($text)) return $text;
+	// UTF-8 non-breaking space (U+00A0): raw bytes \xC2\xA0 → ganti dengan spasi biasa
+	$text = str_replace("\xC2\xA0", ' ', $text);
+	// Byte \xC2 yang berdiri sendiri (sudah kehilangan pasangan \xA0-nya)
+	$text = str_replace("\xC2", '', $text);
+	// Non-breaking space via unicode code point (backup)
+	$text = preg_replace('/\x{00A0}/u', ' ', $text);
+	return $text;
+}

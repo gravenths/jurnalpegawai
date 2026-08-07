@@ -722,6 +722,8 @@ class BaseView
 		include(LAYOUTS_DIR . $this->report_layout); //render page content as html into a variable
 		$page_html = ob_get_contents();
 		ob_end_clean();
+		// Bersihkan mojibake (mis. Â dari copy-paste Word) sebelum DOMDocument memprosesnya
+		$page_html = clean_mojibake($page_html);
 		// fix ampersand and angle brackets
 		// decode HTML entity
 		$page_html = str_replace(array('&lt;', '&gt;', '&amp;'), array('_lt_', '_gt_', '_amp_'), $page_html);
@@ -812,6 +814,19 @@ class BaseView
 
 			$records = array($record);
 		}
+		// Bersihkan mojibake (mis. Â dari copy-paste Word) dari semua nilai string.
+		// Ini memastikan Excel & PDF (via pdf_records) juga mendapat data bersih.
+		foreach ($records as &$row) {
+			if (is_array($row)) {
+				foreach ($row as &$val) {
+					if (is_string($val)) {
+						$val = clean_mojibake($val);
+					}
+				}
+				unset($val);
+			}
+		}
+		unset($row);
 		return $records;
 	}
 
@@ -836,11 +851,25 @@ class BaseView
 	 */
 	private function setInnerHTML($element, $html)
 	{
-		$html = htmlentities($html);
-		$fragment = $element->ownerDocument->createDocumentFragment();
-		$fragment->appendXML($html);
-		$clone = $element->cloneNode(); // Get element copy without children
-		$clone->appendChild($fragment);
+		// Parse dengan HTML parser (bukan XML) supaya named entity seperti &nbsp;,
+		// &Acirc;, dsb — yang muncul dari data copy-paste Word atau karakter non-ASCII —
+		// tidak menyebabkan appendXML() gagal (XML hanya mengenal 5 entity dasar).
+		$tempDoc = new \DOMDocument();
+		// Wrapper <div> mencegah loadHTML menambah <html><body> berlapis;
+		// deklarasi encoding eksplisit mencegah karakter multi-byte korup.
+		$wrapped = '<?xml encoding="UTF-8"><div>' . $html . '</div>';
+		@$tempDoc->loadHTML($wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+		$wrapperNode = $tempDoc->getElementsByTagName('div')->item(0);
+		if ($wrapperNode === null) {
+			return; // parse gagal, biarkan element kosong daripada fatal error
+		}
+
+		$clone = $element->cloneNode(); // element kosong tanpa children
+		foreach ($wrapperNode->childNodes as $child) {
+			$imported = $element->ownerDocument->importNode($child, true);
+			$clone->appendChild($imported);
+		}
 		$element->parentNode->replaceChild($clone, $element);
 	}
 }

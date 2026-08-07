@@ -83,6 +83,8 @@ class GuruController extends SecureController{
 		$this->view->report_layout = "report_layout.php";
 		$this->view->report_paper_size = "A4";
 		$this->view->report_orientation = "portrait";
+		// Kolom teknis/internal yang tidak perlu tampil di export (PDF/Word/Excel/Print)
+		$this->view->report_hidden_fields = array('kodeguru', 'photo', 'user_role_id');
 		$this->render_view("guru/list.php", $data); //render the full page
 	}
 	/**
